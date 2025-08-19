@@ -58,14 +58,24 @@ Our system is designed using a microservices-based architecture to ensure scalab
 
 ```mermaid
 flowchart LR
-  A[Web/App UI (React/Flutter)] -->|HTTPS| B[API Gateway (FastAPI/Nginx)]
-  B -->|gRPC/REST| C[Orchestrator (Langflow/Custom)]
-  C --> D[NLP & Simplify Engine (LLM + Rules + RAG)]
-  D --> E[PDF/Text Parser (GROBID/PyMuPDF)]
-  D --> F[Translation Layer (IndicNLP/LLM)]
-  D --> G[Chunker & RAG (Embeddings + DB)]
-  D --> H[Style & Tone Guard (Hinglish Rules)]
-  G --> I[Vector Store (FAISS/Qdrant)]
+    A[Web/App UI <br/>(React/Flutter)] -->|HTTPS| B[API Gateway <br/>(FastAPI/Nginx)]
+    B -->|gRPC/REST| C[Orchestrator <br/>(Langflow/Custom)]
+
+    C --> D[NLP & Simplify Engine <br/>(LLM + Rules + RAG)]
+
+    %% Downstream modules
+    D --> E[PDF/Text Parser <br/>(GROBID/PyMuPDF)]
+    D --> F[Translation Layer <br/>(IndicNLP / LLM)]
+    D --> G[Chunker & RAG <br/>(Embeddings + DB)]
+    D --> H[Style & Tone Guard <br/>(Hinglish Rules)]
+
+    %% Vector Store link
+    G --> I[Vector Store <br/>(FAISS / Qdrant / PGVector)]
+
+    %% Feedback loop
+    H -.-> D
+    G -. Feedback .-> D
+
 ```
 
 ### Component Breakdown
