@@ -57,16 +57,15 @@ Our system is designed using a microservices-based architecture to ensure scalab
 ### High-Level Diagram
 
 ```mermaid
-graph TD
-    A[User's Device: Browser/Mobile] --> B{Frontend (Next.js)};
-    B --> C{Backend API Gateway (FastAPI)};
-    C --> D[AI Core Service (Python)];
-    C --> E[User Service (Node.js)];
-    E --> F[Database (PostgreSQL)];
-    D -- Processes Request --> G((LLM Provider API e.g., Gemini / Fine-tuned Llama));
-    G -- Returns Simplified Text --> D;
-    D -- Returns Structured JSON --> C;
-    C -- Sends Result --> B;
+flowchart LR
+  A[Web/App UI (React/Flutter)] -->|HTTPS| B[API Gateway (FastAPI/Nginx)]
+  B -->|gRPC/REST| C[Orchestrator (Langflow/Custom)]
+  C --> D[NLP & Simplify Engine (LLM + Rules + RAG)]
+  D --> E[PDF/Text Parser (GROBID/PyMuPDF)]
+  D --> F[Translation Layer (IndicNLP/LLM)]
+  D --> G[Chunker & RAG (Embeddings + DB)]
+  D --> H[Style & Tone Guard (Hinglish Rules)]
+  G --> I[Vector Store (FAISS/Qdrant)]
 ```
 
 ### Component Breakdown
